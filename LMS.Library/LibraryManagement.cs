@@ -10,53 +10,13 @@ namespace LMS.Library
         static void Main(string[] args)
         {
             LibraryDbContext ctx = new LibraryDbContext();
-            //var Book = new Book()
-            //{
-            //    Title = "Test Book 1",
-            //    Author = "Test Author",
-            //    Subject = "Test Subject",
-            //    PublicationDate = "2024",
-            //    DDC = "500",
-            //    ISBN = 1651314856,
-            //    AddedDate = DateTime.Now
-            //};
-            //ctx.Books.Add(Book);
-            //ctx.SaveChanges();
-
-            //var Member = new Member()
-            //{
-
-            //    FullName = "Test Usewfr 2",
-            //    Address = "Test Addrwrfess 2, Test City, Test Country",
-            //    PhoneNumber = "12345678wf9990212",
-            //    EmailAddress = "TestEwfmail2@gmail.com",
-            //    JoinDate = DateTime.Now
-            //};
-            //ctx.Members.Add(Member);
-            //ctx.SaveChanges();
-
-            //var selectedBook = ctx.Books.Where(b=>b.Id==3).First();
-            //var selectedMember = ctx.Members.Where(m => m.Id == 2).First();
-
-            //selectedMember.BorrowedBookId = selectedBook.Id;
-            //selectedMember.Book = selectedBook;
-            //selectedMember.BorrowDate = DateTime.Now;
-
-            //selectedBook.Borrower = selectedMember;
-            //selectedBook.BorrowerId = selectedMember.Id;
-
-            //ctx.SaveChanges();
-
-            //var theBook = ctx.Books.Include(b=>b.Borrower).First();
-            //Console.WriteLine($"Book Title:{theBook.Title}\nBook Author:{theBook.Author}\nPubslished On:{theBook.PublicationDate}\nCurrently Borrowed By:{theBook.Borrower.FullName}");
-
 
             while (true)
             {
                 bool exit = false;
-                Console.WriteLine("\nWelcome to Library Management System!");
+                Console.WriteLine("\n\nWelcome to Library Management System!");
                 Console.WriteLine("\nWhat would you like to do?");
-                Console.WriteLine("\n1:Add a new book to the library\n2:Lend a book to a member\n3:Report book return by a borrower\n4:Add a new member\n5:Remove a member\n6:Remove a book\n7:View all books\n0:Exit");
+                Console.WriteLine("\n1:Add a new book to the library\n2:Lend a book to a member\n3:Report book return by a borrower\n4:Add a new member\n5:Remove a member\n6:Remove a book\n7:View all books\n8:Update a book\n9:Update a member\n10:View All Members\n0:Exit");
                 Console.WriteLine("\n");
                 int option = Convert.ToInt32(Console.ReadLine());
                 switch (option)
@@ -154,6 +114,135 @@ namespace LMS.Library
                         Console.WriteLine("All books:");
                         DisplayAllBookRecords(false);
                         break;
+                    case 8:
+                        Console.WriteLine("\nAll books:");
+                        DisplayAllBookRecords(false);
+                        Console.WriteLine("Which book do you wanna update? Enter id:");
+                        int bid_2 = Convert.ToInt32(Console.ReadLine());
+                        var book = ctx.Books.Where(b => b.Id == bid_2).First();
+                        while (true) 
+                        {
+                            bool exitbe = false;
+                            Console.WriteLine("\nWhat do you want to update about the book?\n1:Title\n2:Author\n3:Subject\n4:Publication Date\n5:Call Number\n6:DDC\n7:ISBN\n8:exit\n");
+                            int uoption = Convert.ToInt32(Console.ReadLine());
+                            Console.WriteLine("\n");
+                            switch (uoption) 
+                            {
+                                case 1:
+                                    Console.WriteLine("Enter new title:");
+                                    string ntitle = Console.ReadLine();
+                                    book.Title = ntitle;
+                                    ctx.SaveChanges();
+                                    Console.WriteLine("\nUpdated title!");
+                                    break;
+                                case 2:
+                                    Console.WriteLine("Enter new auhtor:");
+                                    string nauthor = Console.ReadLine();
+                                    book.Author = nauthor;
+                                    ctx.SaveChanges();
+                                    Console.WriteLine("\nUpdated author!");
+                                    break;
+                                case 3:
+                                    Console.WriteLine("\nEnter new subject:");
+                                    string nsubject = Console.ReadLine();
+                                    book.Subject = nsubject;
+                                    ctx.SaveChanges();
+                                    Console.WriteLine("\nUpdated subject!");
+                                    break;
+                                case 4:
+                                    Console.WriteLine("Enter new publication date:");
+                                    string npd = Console.ReadLine();
+                                    book.PublicationDate = npd;
+                                    ctx.SaveChanges();
+                                    Console.WriteLine("\nUpdated publication date!");
+                                    break;
+                                case 5:
+                                    Console.WriteLine("Enter new call number:");
+                                    string ncn = Console.ReadLine();
+                                    book.CallNumber = ncn;
+                                    ctx.SaveChanges();
+                                    Console.WriteLine("\nUpdated call number!");
+                                    break;
+                                case 6:
+                                    Console.WriteLine("Enter new title:");
+                                    string nddc = Console.ReadLine();
+                                    book.DDC = nddc;
+                                    ctx.SaveChanges();
+                                    Console.WriteLine("\nUpdated DDC!");
+                                    break;
+                                case 7:
+                                    Console.WriteLine("Enter new ISBN:");
+                                    int nisbn = Convert.ToInt32(Console.ReadLine());
+                                    book.ISBN = nisbn;
+                                    ctx.SaveChanges();
+                                    Console.WriteLine("\nUpdated ISBN!");
+                                    break;
+                                case 8:
+                                    exitbe = true;
+                                    break;
+                            }
+                            if (exitbe) 
+                            {
+                                break;
+                            }
+                        }
+                        break;
+                    case 9:
+                        Console.WriteLine("\nAll Members:");
+                        DisplayAllMemberRecords();
+                        Console.WriteLine("Which member do you wanna update? Enter id:");
+                        int mid = Convert.ToInt32(Console.ReadLine());
+                        var member = ctx.Members.Where(m => m.Id == mid).First();
+                        while (true)
+                        {
+                            bool exitme = false;
+                            Console.WriteLine("\nWhat do you want to update about the member?\n1:Full Name\n2:Address\n3:Phone Number\n4:Email Address\n5:exit\n");
+                            int uoption = Convert.ToInt32(Console.ReadLine());
+                            Console.WriteLine("\n");
+                            switch (uoption)
+                            {
+                                case 1:
+                                    Console.WriteLine("Enter new full name:");
+                                    string nfn = Console.ReadLine();
+                                    member.FullName = nfn;
+                                    ctx.SaveChanges();
+                                    Console.WriteLine("\nUpdated full name!");
+                                    break;
+                                case 2:
+                                    Console.WriteLine("Enter new address:");
+                                    string nad = Console.ReadLine();
+                                    member.Address = nad;
+                                    ctx.SaveChanges();
+                                    Console.WriteLine("\nUpdated address!");
+                                    break;
+                                case 3:
+                                    Console.WriteLine("Enter new phone number:");
+                                    string npn = Console.ReadLine();
+                                    member.PhoneNumber = npn;
+                                    ctx.SaveChanges();
+                                    Console.WriteLine("\nUpdated phone number!");
+                                    break;
+                                case 4:
+                                    Console.WriteLine("Enter new email address:");
+                                    string nea = Console.ReadLine();
+                                    member.EmailAddress = nea;
+                                    ctx.SaveChanges();
+                                    Console.WriteLine("\nUpdated email address!");
+                                    break;
+                                case 5:
+                                    exitme = true;
+                                    break;
+                            }
+                            if (exitme)
+                            {
+                                break;
+                            }
+                        }
+                        break;
+                    case 10:
+                        Console.WriteLine("All Members:");
+                        DisplayAllMemberRecords();
+                        break;
                     case 0:
                         exit = true;
                         Console.WriteLine("GoodBye! Exited Library Mangement System.");
@@ -215,7 +304,18 @@ namespace LMS.Library
             }
             foreach (var theBook in books) 
             {
-                Console.WriteLine($"\nId:{theBook.Id}\nTitle:{theBook.Title}\nAuthor:{theBook.Author}\nSubject:{theBook.Subject}\nPublished On:{theBook.PublicationDate}\nCallNumber:{theBook.CallNumber}\nDDC:{theBook.DDC}\nISBN:{theBook.DDC}\nAdded On:{theBook.AddedDate}\nBorrower ID:{theBook.BorrowerId}\n");
+                Console.WriteLine($"\nId:{theBook.Id}\nTitle:{theBook.Title}\nAuthor:{theBook.Author}\nSubject:{theBook.Subject}\nPublished On:{theBook.PublicationDate}\nCallNumber:{theBook.CallNumber}\nDDC:{theBook.DDC}\nISBN:{theBook.ISBN}\nAdded On:{theBook.AddedDate}\nBorrower ID:{theBook.BorrowerId}\n");
+            }
+        }
+
+        static void DisplayAllMemberRecords()
+        {
+            LibraryDbContext ctx = new LibraryDbContext();
+            List<Member> members = ctx.Members.ToList();
+
+            foreach (var m in members)
+            {
+                Console.WriteLine($"\nId:{m.Id}\nFull Name:{m.FullName}\nAddress:{m.Address}\nEmail Address:{m.EmailAddress}\nPhone Number:{m.PhoneNumber}\nJoinDate:{m.JoinDate}\nBorrowed Book Id:{m.BorrowedBookId}\n");
             }
         }
 
