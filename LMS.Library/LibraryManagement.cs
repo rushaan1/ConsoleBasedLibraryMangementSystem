@@ -7,37 +7,69 @@ namespace LMS.Library
 {
     internal class LibraryManagement
     {
+        static string username;
         static void Main(string[] args)
         {
             LibraryDbContext ctx = new LibraryDbContext();
+
+            //var salt = PasswordHelper.GenerateSalt();
+            //var pHash = PasswordHelper.HashPassword("ad1212", salt);
+
+            //var admin = new Administrator()
+            //{
+            //    FullName = "Admin1FName",
+            //    PhoneNumber = "56457513354",
+            //    Email = "admin1@gmail.com",
+            //    Address = "admin sample address, sample city, sample country",
+            //    Username = "admin1",
+            //    PasswordHash = pHash,
+            //    Salt = salt,
+            //    JoinDate = DateTime.Now
+            //};
+
+            //ctx.Administrators.Add(admin);
+            //ctx.SaveChanges();
+
+            while (true) 
+            {
+                Console.WriteLine("Login to Library Mangement System\n\nEnter Username:");
+                username = Console.ReadLine(); 
+                Console.WriteLine("\nEnter Password:");
+                string pwd = Console.ReadLine();
+                if (VerifyPassword(username, pwd)) 
+                {
+                    break;
+                }
+                Console.WriteLine("\nIncorrect username or password!\n");
+            }
 
             while (true)
             {
                 bool exit = false;
                 Console.WriteLine("\n\nWelcome to Library Management System!");
                 Console.WriteLine("\nWhat would you like to do?");
-                Console.WriteLine("\n1:Add a new book to the library\n2:Lend a book to a member\n3:Report book return by a borrower\n4:Add a new member\n5:Remove a member\n6:Remove a book\n7:View all books\n8:Update a book\n9:Update a member\n10:View All Members\n0:Exit");
+                Console.WriteLine("\n1:Add a new book to the library\n2:Lend a book to a member\n3:Report book return by a borrower\n4:Add a new member\n5:Remove a member\n6:Remove a book\n7:View all books\n8:Update a book\n9:Update a member\n10:View All Members\n11:Add a new administrator\n12:Update administrator details\n0:Exit");
                 Console.WriteLine("\n");
                 int option = Convert.ToInt32(Console.ReadLine());
                 switch (option)
                 {
                     case 1:
-                        Console.WriteLine("Enter book title:");
+                        Console.WriteLine("\nEnter book title:");
                         string title = Console.ReadLine();
-                        Console.WriteLine("Enter book author:");
+                        Console.WriteLine("\nEnter book author:");
                         string author = Console.ReadLine();
-                        Console.WriteLine("Enter subject of the book:");
+                        Console.WriteLine("\nEnter subject of the book:");
                         string subject = Console.ReadLine();
-                        Console.WriteLine("Enter publication date or enter None:");
+                        Console.WriteLine("\nEnter publication date or enter None:");
                         string? pd = NoneToNull(Console.ReadLine());
-                        Console.WriteLine("Enter book Call Number or enter None:");
+                        Console.WriteLine("\nEnter book Call Number or enter None:");
                         string? bcn = NoneToNull(Console.ReadLine());
-                        Console.WriteLine("Enter DDC or enter None:");
+                        Console.WriteLine("\nEnter DDC or enter None:");
                         string? ddc = NoneToNull(Console.ReadLine());
-                        Console.WriteLine("Enter ISBN:");
+                        Console.WriteLine("\nEnter ISBN:");
                         int isbn = Convert.ToInt32(Console.ReadLine());
                         AddBook(title, author, subject, pd, bcn, ddc, isbn);
-                        Console.WriteLine("Book Added Successfully!");
+                        Console.WriteLine("\nBook Added Successfully!\n");
                         break;
                     case 2:
                         Console.WriteLine("Enter phone number of member to whom book is to be lended:");
@@ -73,16 +105,16 @@ namespace LMS.Library
                         }
                         break;
                     case 4:
-                        Console.WriteLine("Enter full name:");
+                        Console.WriteLine("\nEnter full name:");
                         string fullName = Console.ReadLine();
-                        Console.WriteLine("Enter address:");
+                        Console.WriteLine("\nEnter address:");
                         string address = Console.ReadLine();
-                        Console.WriteLine("Enter phone number");
+                        Console.WriteLine("\nEnter phone number");
                         string phone = Console.ReadLine();
-                        Console.WriteLine("Enter Email Address:");
+                        Console.WriteLine("\nEnter Email Address:");
                         string email = Console.ReadLine();
                         AddMember(fullName, address, phone, email);
-                        Console.WriteLine("Member added successfully!");
+                        Console.WriteLine("\nMember added successfully!\n");
                         break;
                     case 5:
                         Console.WriteLine("Enter the phone number of the member to be removed!");
@@ -243,6 +275,111 @@ namespace LMS.Library
                         Console.WriteLine("All Members:");
                         DisplayAllMemberRecords();
                         break;
+
+
+                    case 11:
+                        Console.WriteLine("\nEnter full name:");
+                        string fullName_a = Console.ReadLine();
+                        Console.WriteLine("\nEnter address:");
+                        string address_a = Console.ReadLine();
+                        Console.WriteLine("\nEnter phone number");
+                        string phone_a = Console.ReadLine();
+                        Console.WriteLine("\nEnter Email Address:");
+                        string email_a = Console.ReadLine();
+                        Console.WriteLine("\nEnter username:");
+                        string uname = Console.ReadLine();
+                        Console.WriteLine("\nEnter password:");
+                        string pwd1 = Console.ReadLine();
+                        Console.WriteLine("\nEnter password again:");
+                        string pwd2 = Console.ReadLine();
+                        if (pwd1 != pwd2) 
+                        {
+                            Console.WriteLine("\nPasswords do not match!\n");
+                            break;
+                        }
+                        AddAdministrator(fullName_a, address_a, phone_a, email_a, uname, pwd2);
+                        Console.WriteLine("\nAdministrator added successfully!\n");
+                        break;
+
+
+
+                    case 12:
+                        var admin = ctx.Administrators.Where(a => a.Username == username).First();
+                        while (true)
+                        {
+                            bool exitme = false;
+                            Console.WriteLine("\nWhat do you want to update about current logged in administrator?\n1:Full Name\n2:Address\n3:Phone Number\n4:Email Address\n5:Username\n6:Password\n7:exit\n");
+                            int uoption = Convert.ToInt32(Console.ReadLine());
+                            Console.WriteLine("\n");
+                            switch (uoption)
+                            {
+                                case 1:
+                                    Console.WriteLine("Enter new full name:");
+                                    string nfn = Console.ReadLine();
+                                    admin.FullName = nfn;
+                                    ctx.SaveChanges();
+                                    Console.WriteLine("\nUpdated full name!");
+                                    break;
+                                case 2:
+                                    Console.WriteLine("Enter new address:");
+                                    string nad = Console.ReadLine();
+                                    admin.Address = nad;
+                                    ctx.SaveChanges();
+                                    Console.WriteLine("\nUpdated address!");
+                                    break;
+                                case 3:
+                                    Console.WriteLine("Enter new phone number:");
+                                    string npn = Console.ReadLine();
+                                    admin.PhoneNumber = npn;
+                                    ctx.SaveChanges();
+                                    Console.WriteLine("\nUpdated phone number!");
+                                    break;
+                                case 4:
+                                    Console.WriteLine("Enter new email address:");
+                                    string nea = Console.ReadLine();
+                                    admin.Email = nea;
+                                    ctx.SaveChanges();
+                                    Console.WriteLine("\nUpdated email address!");
+                                    break;
+                                case 5:
+                                    Console.WriteLine("Enter new username:");
+                                    string nun = Console.ReadLine();
+                                    admin.Username = nun;
+                                    ctx.SaveChanges();
+                                    Console.WriteLine("\nUpdated username!");
+                                    break;
+                                case 6:
+                                    Console.WriteLine("Enter new password:");
+                                    string npwd = Console.ReadLine();
+                                    Console.WriteLine("\nEnter new password again:");
+                                    string npwd2 = Console.ReadLine();
+                                    if (npwd != npwd2) 
+                                    {
+                                        Console.WriteLine("\nPasswords do not match!");
+                                        break;
+                                    }
+                                    var salt = PasswordHelper.GenerateSalt();
+                                    var pHash = PasswordHelper.HashPassword(npwd2, salt);
+                                    admin.Salt = salt;
+                                    admin.PasswordHash = pHash;
+
+                                    ctx.SaveChanges();
+                                    Console.WriteLine("\nUpdated password!");
+                                    break;
+
+
+                                case 7:
+                                    exitme = true;
+                                    break;
+                            }
+                            if (exitme)
+                            {
+                                break;
+                            }
+                        }
+                        break;
+
+
                     case 0:
                         exit = true;
                         Console.WriteLine("GoodBye! Exited Library Mangement System.");
@@ -255,6 +392,29 @@ namespace LMS.Library
                 Console.WriteLine("Press anything to continue...");
                 Console.ReadKey();
             }
+        }
+
+        static void AddAdministrator(string fullName_a, string address_a, string phone_a, string email_a, string uname, string pwd)
+        {
+            LibraryDbContext ctx = new LibraryDbContext();
+
+            var salt = PasswordHelper.GenerateSalt();
+            var pHash = PasswordHelper.HashPassword(pwd, salt);
+
+            var admin = new Administrator()
+            {
+                FullName = fullName_a,
+                PhoneNumber = phone_a,
+                Email = email_a,
+                Address = address_a,
+                Username = uname,
+                PasswordHash = pHash,
+                Salt = salt,
+                JoinDate = DateTime.Now
+            };
+
+            ctx.Administrators.Add(admin);
+            ctx.SaveChanges();
         }
 
         static void AddBook(string title, string author, string subject, string? publicationDate, string? callNumber, string? ddc, int isbn) 
@@ -394,6 +554,23 @@ namespace LMS.Library
             ctx.Books.Remove(book);
             ctx.SaveChanges();
             return true;
+        }
+
+        static bool VerifyPassword(string username, string password)
+        {
+            using (LibraryDbContext ctx = new LibraryDbContext())
+            {
+                var administrator = ctx.Administrators.FirstOrDefault(a => a.Username == username);
+                if (administrator != null)
+                {
+                    var storedSalt = administrator.Salt;
+                    var storedHashedPwd = administrator.PasswordHash;
+
+                    var hashedPwd = PasswordHelper.HashPassword(password, storedSalt);
+                    return hashedPwd.SequenceEqual(storedHashedPwd);
+                }
+                return false; 
+            }
         }
 
         static string? NoneToNull(string value) 

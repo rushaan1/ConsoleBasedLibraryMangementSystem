@@ -12,6 +12,7 @@ namespace LMS.Data
     {
         public DbSet<Book> Books { get; set; }
         public DbSet<Member> Members { get; set; }
+        public DbSet<Administrator> Administrators { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
