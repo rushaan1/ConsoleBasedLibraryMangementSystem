@@ -22,6 +22,10 @@ namespace LMS.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Member>()
+                .HasIndex(m => m.PhoneNumber)
+                .IsUnique();
+
+            modelBuilder.Entity<Member>()
                 .HasOne(m => m.Book)
                 .WithOne(b => b.Borrower)
                 .HasForeignKey<Member>(m => m.BorrowedBookId);
